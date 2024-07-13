@@ -1,15 +1,15 @@
 `timescale 1ns / 1ps
 `include "defines.vh"
 
-module ctrl(
-    input   logic               RST,
-    input   logic               STALL_REQ_ID,
-    input   logic               STALL_REQ_EX,
-    input   logic               STALL_REQ_MEM,
-    output  logic[`STALL_BUS]   STALL
+module stall_ctrl(
+    input   logic             RST,
+    input   logic             STALL_REQ_ID,
+    input   logic             STALL_REQ_EX,
+    input   logic             STALL_REQ_MEM,
+    output  logic[`STALL_BUS] STALL
 );
 
-always_comb begin : Stall_Handle
+always_comb begin : STALL_HANDLE
     if (RST == `RST_EN) begin
         STALL = 6'b00000;
     end else if (STALL_REQ_ID == `STOP) begin

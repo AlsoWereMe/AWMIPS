@@ -1,16 +1,11 @@
 /* 全局宏定义 */
 // 零字
 `define ZERO_WORD       32'h00000000
-// 寄存器零地址
-`define ZERO_ADDR       5'b00000
 // 使能信号
 `define RST_EN          1'b1            
-`define WENABLE         1'b1
-`define WDISABLE        1'b0
-`define RENABLE         1'b1
-`define RDISABLE        1'b0
-`define CENABLE         1'b1
-`define CDISABLE        1'b0
+`define WE              1'b1
+`define RE              1'b1
+`define CE              1'b1
 // 译码阶段输出aluop_o                
 `define ALU_OP_BUS        7:0
 // 译码阶段输出alusel_o            
@@ -133,40 +128,18 @@
 `define EXE_RES_LS      3'b111
 `define EXE_RES_NOP     3'b000
 
-/* ROM宏定义 */
-/* 只在ROM中使用 */
-// 指令地址线
-`define INST_ADDR_BUS       31:0                
-// 指令数据线
-`define INST_DATA_BUS       31:0                
-// ROM存储128Kb的指令
-`define INST_MEM_NUM        131072           
-// ROM实际访存使用的地址线宽度，为17位，即128Kb的对数   
-`define INST_MEM_NUM_LOG2   17                  
-
-/* RAM宏定义 */
-/* 只在RAM中使用 */
-// 数据地址线
-`define DATA_ADDR_BUS       31:0                
-// 数据字线
-`define DATA_BUS            31:0 
-`define DATA_WIDTH          32 
-// RAM存储16Kb的数据
-`define DATA_MEM_NUM        16384
-// RAM实际访存使用的地址线宽度，为14位，为16Kb的对数   
-`define DATA_MEM_NUM_LOG2   14
+/* SRAM线宏定义 */
+`define SRAM_ADDR_BUS   31:0                                                       
+`define SRAM_DATA_BUS   31:0 
+`define SRAM_BSEL_BUS   3:0
 
 /* 通用寄存器宏定义 */
-// 寄存器堆地址线
-`define REG_ADDR_BUS            4:0                 
-// 寄存器堆数据线  
-`define REG_DATA_BUS            31:0                
-`define REG_DATA_WIDTH          32                  
-`define DOUBLE_REG_DATA_BUS     63:0
-`define DOUBLE_REG_DATA_WIDTH   64
-`define REG_NUM                 32
-`define REG_NUM_LOG2            5                   
-`define NOP_Reg_Addr            5'b00000 
+`define REG_ADDR_BUS    4:0                 
+`define REG_DATA_BUS    31:0
+// 传输双字数据时使用                             
+`define DREG_DATA_BUS   63:0
+`define REG_NUM         32     
+`define REG_ZERO_ADDR   5'b00000         
 
 /* 除法模块宏定义 */
 // 状态机

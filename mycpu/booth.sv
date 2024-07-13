@@ -6,8 +6,8 @@
 module booth(
     input   logic[32:0]    MULTIPLICAND,    // 被乘数
     input   logic[2:0]     MULTIPLIER_3,    // 乘数的三位
-    output  logic[63:0]    PARTIAL_PRODUCT, // 部分积
-    output  logic[1:0]     CARRY            // 进位
+    output   logic[63:0]    PARTIAL_PRODUCT, // 部分积
+    output   logic[1:0]     CARRY            // 进位
     );
     logic[32:0] multiplicand_not;
     assign multiplicand_not = ~MULTIPLICAND;

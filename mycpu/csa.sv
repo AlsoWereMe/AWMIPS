@@ -7,8 +7,8 @@ module csa(
     input   logic[63:0] ADDER1, // 第一个加数
     input   logic[63:0] ADDER2, // 第二个加数
     input   logic[63:0] ADDER3, // 第三个加数
-    output  logic[63:0] SUM,    // 和
-    output  logic[63:0] CARRY   // 进位
+    output   logic[63:0] SUM,    // 和
+    output   logic[63:0] CARRY   // 进位
     );
 
     genvar i;

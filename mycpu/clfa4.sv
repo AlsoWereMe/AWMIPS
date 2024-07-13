@@ -7,10 +7,10 @@ module clfa4(
     input   logic[3:0] ADDER1,
     input   logic[3:0] ADDER2,
     input   logic      CARRY_I,
-    output  logic      GENER,
-    output  logic      PROPA,
-    output  logic[3:0] SUM,
-    output  logic[3:0] CARRY_O
+    output   logic      GENER,
+    output   logic      PROPA,
+    output   logic[3:0] SUM,
+    output   logic[3:0] CARRY_O
     );
 
     logic[3:0] propagation;

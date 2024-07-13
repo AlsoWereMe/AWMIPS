@@ -4,9 +4,9 @@ module cla4(
     input   logic[3:0]  PROPA_I,
     input   logic[3:0]  GENER_I,
     input   logic       CARRY_I,
-    output  logic[3:0]  CARRY_O,
-    output  logic       GENER_O,
-    output  logic       PROPA_O
+    output   logic[3:0]  CARRY_O,
+    output   logic       GENER_O,
+    output   logic       PROPA_O
     );
 
     // 计算进位

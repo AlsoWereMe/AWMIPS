@@ -9,8 +9,8 @@ module fa64(
     input  logic[63:0] ADDER2,
     input  logic       CARRY_I,
     input  logic       IS_SUB,
-    output logic[63:0] SUM,
-    output logic[63:0] CARRY_O
+    output  logic[63:0] SUM,
+    output  logic[63:0] CARRY_O
     );
     
     logic[63:0] adder2_comple;

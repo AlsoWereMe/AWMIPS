@@ -12,15 +12,15 @@ module mul(
     input   logic[`REG_DATA_BUS]        MULTIPLICAND,
     input   logic                       START,
     input   logic                       CANCEL,
-    output  logic[`DOUBLE_REG_DATA_BUS] RESULT,
-    output  logic                       READY
+    output   logic[`DREG_DATA_BUS] RESULT,
+    output   logic                       READY
 );
     // 状态
     logic state;
     logic s_next;
     // 加数
-    logic[`DOUBLE_REG_DATA_BUS] adder1;
-    logic[`DOUBLE_REG_DATA_BUS] adder2;
+    logic[`DREG_DATA_BUS] adder1;
+    logic[`DREG_DATA_BUS] adder2;
     // 扩展后乘数与被乘数
     logic[32:0] MULTIPLICAND_ext;
     logic[33:0] MULTIPLIER_ext;
