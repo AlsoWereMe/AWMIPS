@@ -1,42 +1,78 @@
 /* 全局宏定义 */
+/* 所有使能、选中信号均为低有效，其余见具体（因暂未统一） */
 // 零字
+`define INST_NOOP       32'h34000000
 `define ZERO_WORD       32'h00000000
-// 使能信号
-`define RST_EN          1'b1            
-`define WE              1'b1
-`define RE              1'b1
-`define CE              1'b1
-// 译码阶段输出aluop_o                
-`define ALU_OP_BUS        7:0
-// 译码阶段输出alusel_o            
-`define ALU_SEL_BUS       2:0
+`define ZERO_HFWD       16'h0000
+`define ZERO_BYTE       8'h0
 // 有效信号
-`define INST_VALID       1'b1
-`define INST_INVALID     1'b0
-// 异常信号
-`define ERROR           1'b1
-`define NOERR           1'b0
+`define UNLOCKED        1'b0 
+`define RST_EN          1'b0      
+`define WE              1'b0
+`define RE              1'b0
+`define CE              1'b0
+`define OE              1'b0 
+`define BE              4'b0  
+`define SELECTED        1'b0          
+`define INST_VALID      1'b0
+`define IN_DESLOT       1'b0
+`define GO_BRANCH       1'b0
 
 /* 流水线暂停信号宏定义 */
+/* STALL位含义 */
+/* bit0 : if  */
+/* bit1 : ic  */
+/* bit2 : id  */
+/* bit3 : ex  */
+/* bit4 : df  */
+/* bit5 : mem */
+/* bit6 : wb  */
 `define STOP            1'b1
-`define NOT_STOP        1'b0
-`define STALL_BUS       5:0
-`define STALL_ID        6'b000111
-`define STALL_EX        6'b001111
-`define STALL_MEM       6'b011111
-/* 符号运算宏定义 */
-`define SIGNED      1'b1
-`define UNSIGNED    1'b0
+`define STALL_BUS       6:0
+`define NO_STALL        7'b0000000
+`define STALL_IF        7'b0000001
+`define STALL_IC        7'b0000011
+`define STALL_ID        7'b0000111
+`define STALL_EX        7'b0001111
+`define STALL_DF        7'b0011111
+`define STALL_MEM       7'b0111111
+`define STALL_WB        7'b1111111
 
-/* 结果就绪信号宏定义 */
-`define RESULT_READY       1'b1
-`define RESULT_NOT_READY   1'b0
+/* GPRs */
+`define REG_ADDR_BUS    4:0                 
+`define REG_DATA_BUS    31:0                           
+`define DREG_DATA_BUS   63:0
+`define REG_NUM         32     
+`define REG_ZERO_ADDR   5'b00000         
 
-/* 跳转指令相关信号宏定义 */
-`define NOT_BRANCH          1'b0
-`define GO_BRANCH           1'b1
-`define OUT_DELAY_SLOT      1'b0
-`define IN_DELAY_SLOT       1'b1
+/* Cache */
+`define CACHE_TAG_BUS    19:0
+`define CACHE_INDEX_BUS  7:0
+`define CACHE_OFFSET_BUS 3:0
+
+/* SRAM */
+`define CPU_ADDR_BUS    31:0                                                       
+`define SRAM_DATA_BUS   31:0 
+`define SRAM_ADDR_BUS   19:0 
+`define DATA_BYTE_BUS   7:0
+`define SRAM_BSEL_BUS   3:0
+`define BASE_RAM_FLAG   32'h80000000
+`define EXT_RAM_FLAG    32'h80400000
+`define SRAM_SEL_MASK   32'hffc00000
+
+/* UART */
+`define CLK_FREQUENCY 64000000
+`define UART_BAUD     9600
+`define START         1'b1
+`define AVAI          1'b1
+`define READY         1'b1
+`define CLEAR         1'b1
+`define VALID         1'b1
+        
+/* 特殊地址宏定义 */
+`define UART_DATA_ADDR     32'hbfd003f8 
+`define UART_FLAG_ADDR     32'hbfd003fc
+`define IF_INIT_ADDR       32'h80000000
 
 /* MIPS指令信号宏定义 */
 // SPECIAL_FUNC
@@ -86,8 +122,9 @@
 `define EXE_SPECIAL     6'b000000
 `define EXE_SPECIAL2    6'b011100
 `define EXE_REGIMM      6'b000001
-// Op信号和Sel信号为我自定义的值,只需让Alu模块能够区分出类型即可
+// Op信号和Sel信号为我自定义的值,只需让Alu模块能够区分出指令即可
 // Alu_Op
+`define ALU_OP_BUS      7:0        
 `define EXE_OR_OP       8'b00100101
 `define EXE_AND_OP      8'b00100110
 `define EXE_XOR_OP      8'b00100111
@@ -120,6 +157,7 @@
 `define EXE_SW_OP       8'B01011000
 `define EXE_NOP_OP      8'b00000000
 // Alu_Sel
+`define ALU_SEL_BUS     2:0
 `define EXE_RES_LOGIC   3'b001
 `define EXE_RES_SHIFT   3'b010
 `define EXE_RES_ARITH   3'b100
@@ -127,40 +165,3 @@
 `define EXE_RES_JB      3'b110
 `define EXE_RES_LS      3'b111
 `define EXE_RES_NOP     3'b000
-
-/* SRAM线宏定义 */
-`define SRAM_ADDR_BUS   31:0                                                       
-`define SRAM_DATA_BUS   31:0 
-`define SRAM_BSEL_BUS   3:0
-
-/* 通用寄存器宏定义 */
-`define REG_ADDR_BUS    4:0                 
-`define REG_DATA_BUS    31:0
-// 传输双字数据时使用                             
-`define DREG_DATA_BUS   63:0
-`define REG_NUM         32     
-`define REG_ZERO_ADDR   5'b00000         
-
-/* 除法模块宏定义 */
-// 状态机
-`define DIV_FREE    2'b00
-`define DIV_ZERO    2'b01
-`define DIV_BUSY    2'b10
-`define DIV_DONE    2'b11
-// 开始与结束信号
-`define DIV_START   1'b1
-`define DIV_STOP    1'b0
-// 取消信号
-`define DIV_CANCEL      1'b1
-`define DIV_NOT_CANCEL  1'b0
-
-/* 乘法模块宏定义 */
-// 状态机
-`define MUL_FREE    1'b0
-`define MUL_BUSY    1'b1
-// 开始与结束信号
-`define MUL_START   1'b1
-`define MUL_STOP    1'b0
-// 取消信号
-`define MUL_CANCEL      1'b1
-`define MUL_NOT_CANCEL  1'b0
